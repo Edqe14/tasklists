@@ -2,23 +2,22 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "outDir": "dist",
-    "declarationDir": "dist",
     "module": "commonjs",
     "target": "esnext",
     "rootDir": "src",
     "baseUrl": "src",
+	  "useDefineForClassFields": true,
     "lib": [
       "DOM",
       "esnext",
-      "esnext.array",
-      "esnext.asynciterable",
-      "esnext.intl",
-      "esnext.symbol"
+      "DOM.Iterable"
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "react": ["./node_modules/preact/compat/"],
+      "react-dom": ["./node_modules/preact/compat/"]
     },
-    "declaration": true,
+	  "allowJs": false,
     "removeComments": true,
     "pretty": true,
     "strict": true,
@@ -28,13 +27,19 @@
     "esModuleInterop": true,
     "sourceMap": true,
     "skipDefaultLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+	  "noEmit": true,
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true
   },
   "exclude": [
-    "tests",
     "node_modules"
   ],
   "include": [
-    "src/**/*"
-  ]
+    "src"
+  ],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

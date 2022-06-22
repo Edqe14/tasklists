@@ -2,6 +2,11 @@ import './index.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from 'react-router-dom';
 
 // Set dark theme if applicable
 if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -14,6 +19,10 @@ if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.match
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <h1>helo</h1>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<h1>helo</h1>} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );

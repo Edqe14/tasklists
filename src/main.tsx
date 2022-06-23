@@ -7,6 +7,7 @@ import {
   Routes,
   Route
 } from 'react-router-dom';
+import Index from './pages/Index';
 
 // Set dark theme if applicable
 if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -15,13 +16,12 @@ if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.match
   document.documentElement.classList.remove('dark');
 }
 
-
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<h1>helo</h1>} />
+        <Route path="/" element={<Index />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

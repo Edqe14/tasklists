@@ -1,12 +1,12 @@
-import TauriAPI from '@tauri-apps/api';
+/* eslint-disable no-underscore-dangle */
 
 declare global {
   interface Window {
-    __TAURI__: typeof TauriAPI;
+    __TAURI__: typeof import('@tauri-apps/api');
   }
 }
 
-// eslint-disable-next-line no-underscore-dangle
-const isTauriEnvironment = !!window.__TAURI__;
+export const supportsTauri = () => !!window.__TAURI__;
+export const apis = window.__TAURI__;
 
-export default isTauriEnvironment;
+export default supportsTauri();

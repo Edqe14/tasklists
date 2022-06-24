@@ -8,6 +8,8 @@ import {
   Route
 } from 'react-router-dom';
 import Index from './pages/Index';
+import isTauri from './lib/backend';
+import Titlebar from './components/Titlebar';
 
 // Set dark theme if applicable
 if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -19,10 +21,14 @@ if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.match
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Index />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      {isTauri && <Titlebar />}
+
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   </React.StrictMode>
 );

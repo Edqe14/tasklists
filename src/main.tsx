@@ -7,20 +7,36 @@ import {
   Routes,
   Route
 } from 'react-router-dom';
+import { useLocalStorage } from '@mantine/hooks';
+import shallow from 'zustand/shallow';
+import { ColorScheme } from '@mantine/core';
 import Index from './pages/Index';
 import isTauri from './lib/backend';
 import Titlebar from './components/Titlebar';
 import Container from './components/Container';
+import useStore from './lib/store';
+
+const updateTheme = () => {
+  if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+};
+
+updateTheme();
 
 const Entry = () => {
+  const [theme] = useLocalStorage({ key: 'theme', defaultValue: 'dark' });
+  const [storeTheme, setStoreTheme] = useStore((state) => [state.theme, state.setTheme], shallow);
+
   useEffect(() => {
-    // Set dark theme if applicable
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, []);
+    updateTheme();
+  }, [storeTheme]);
+
+  useEffect(() => {
+    setStoreTheme(theme as ColorScheme);
+  }, [theme]);
 
   return (
     (
@@ -40,7 +56,8 @@ const Entry = () => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const root = ReactDOM.createRoot(document.getElementById('root')!);
+root.render(
   <React.StrictMode>
     <Entry />
   </React.StrictMode>

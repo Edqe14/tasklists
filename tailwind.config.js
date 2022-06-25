@@ -1,18 +1,15 @@
 /** @type {import('tailwindcss').Config} */
-// eslint-disable-next-line @typescript-eslint/no-var-requires,import/no-extraneous-dependencies
-const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
   darkMode: 'class',
   content: [
     './index.html',
-    './src/*.{js,ts,jsx,tsx}',
     './src/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
       fontFamily: {
-        jetBrainsMono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
+        jetBrainsMono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
         gray: {

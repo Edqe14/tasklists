@@ -16,6 +16,26 @@ A simple and rich Typescript project template for your development needs.
 3. 🐶 [Husky](https://typicode.github.io/husky/#/) to improve your commits
 4. 🧪 Test with [Jest](https://jestjs.io/)
 
+## Javascript
+
+| Framework | [React 18](https://reactjs.org/) |
+|----------------------|----------------------------------|
+| Bundler              | [Vite 2](https://vitejs.dev/)    |
+| Typescript           | ✅                                |
+
+### UI
+
+- [**Mantine**](https://mantine.dev/)
+
+### State Management
+
+- [**Zustand**](https://zustand-demo.pmnd.rs/)
+
+## CSS
+
+| Framework | [TailwindCSS 3](https://tailwindcss.com/) 🎨 |
+|-----------|-----------------------------------------|
+
 ## License 📋
 
 MIT

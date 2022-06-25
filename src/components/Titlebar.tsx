@@ -23,13 +23,13 @@ const Titlebar = () => {
     }
   };
 
-  const size = useMemo(() => 18, []);
+  const size = useMemo(() => 16, []);
   const clickable = useMemo(() => 'cursor-pointer z-10 opacity-50 transition-all duration-300 ease hover:opacity-80', []);
 
   return (
     <section
       aria-roledescription="titlebar"
-      className="bg-gray-50 dark:bg-gray-800 px-3 py-2 select-none flex"
+      className="bg-gray-50 dark:bg-gray-800 px-3 py-[0.2rem] select-none flex"
     >
       <section onMouseDown={handleMouse} className="flex-grow">
         <h1
@@ -42,7 +42,7 @@ const Titlebar = () => {
 
       <section className="flex gap-4 items-center">
         <MdMinimize size={size} className={clickable} onClick={() => apis.window.appWindow.minimize()} />
-        <FiMaximize size={size - 3} className={clickable} onClick={() => apis.window.appWindow.toggleMaximize()} />
+        <FiMaximize size={size - 2} className={clickable} onClick={() => apis.window.appWindow.toggleMaximize()} />
         <MdClose size={size} className={`hover:text-red-500 ${clickable}`} onClick={() => apis.window.appWindow.close()} />
       </section>
     </section>

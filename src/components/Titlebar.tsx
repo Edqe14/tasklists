@@ -33,7 +33,7 @@ const Titlebar = () => {
     >
       <section onMouseDown={handleMouse} className="flex-grow">
         <h1
-          className={`font-bold text-sm italic ${clickable}`}
+          className={`inline font-bold text-sm italic ${clickable}`}
           onClick={() => apis.shell.open('https://github.com/edqe14/tasklists')}
         >
           Tasklists

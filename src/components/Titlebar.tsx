@@ -43,7 +43,7 @@ const Titlebar = () => {
       <section className="flex gap-4 items-center">
         <MdMinimize size={size} className={clickable} onClick={() => apis.window.appWindow.minimize()} />
         <FiMaximize size={size - 2} className={clickable} onClick={() => apis.window.appWindow.toggleMaximize()} />
-        <MdClose size={size} className={`hover:text-red-500 ${clickable}`} onClick={() => apis.window.appWindow.close()} />
+        <MdClose size={size} className={`hover:text-red-400 ${clickable}`} onClick={() => apis.window.appWindow.close()} />
       </section>
     </section>
   );

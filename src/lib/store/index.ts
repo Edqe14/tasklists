@@ -19,7 +19,14 @@ export interface StoreState {
 const testAdapter = new StoreAdapter<TestData>('test', {
   strategy: supportsTauri()
     ? new TauriFileSystemStrategy<TestData>({ foo: 'bar' })
-    : new LocalStorageStrategy<TestData>({ foo: 'bar' })
+    : new LocalStorageStrategy<TestData>({ foo: 'bar' }),
+  autoSave: 15_000,
+  autoSaveHandler: async () => {
+    const payload = { foo: `baz ${Date.now()}` };
+    await testAdapter.write(payload);
+
+    console.log('auto saved', payload);
+  }
 });
 
 const useStore = create<StoreState>()((set) => ({

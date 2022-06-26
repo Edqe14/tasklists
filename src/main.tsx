@@ -27,12 +27,12 @@ const updateTheme = () => {
 updateTheme();
 
 const Entry = () => {
-  const [theme] = useLocalStorage({ key: 'theme', defaultValue: 'dark' });
+  const [theme] = useLocalStorage({ key: 'theme', defaultValue: 'dark', serialize: (v) => v });
   const [storeTheme, setStoreTheme] = useStore((state) => [state.theme, state.setTheme], shallow);
 
   useEffect(() => {
     updateTheme();
-  }, [storeTheme]);
+  }, [theme, storeTheme]);
 
   useEffect(() => {
     setStoreTheme(theme as ColorScheme);

@@ -1,20 +1,19 @@
 import { MouseEventHandler, useMemo } from 'react';
 import { MdClose, MdMinimize } from 'react-icons/md';
 import { FiMaximize } from 'react-icons/fi';
-import { apis } from '@/lib/backend';
-
+import { shell, window as tauriWindow } from '@tauri-apps/api';
 
 const Titlebar = () => {
   const handleMouse: MouseEventHandler<HTMLElement> = async (ev) => {
     switch (ev.detail) {
       case 1: {
-        await apis.window.appWindow.startDragging();
+        await tauriWindow.appWindow.startDragging();
 
         break;
       }
 
       case 2: {
-        await apis.window.appWindow.toggleMaximize();
+        await tauriWindow.appWindow.toggleMaximize();
 
         break;
       }
@@ -34,16 +33,16 @@ const Titlebar = () => {
       <section onMouseDown={handleMouse} className="flex-grow">
         <h1
           className={`inline font-bold text-sm italic ${clickable}`}
-          onClick={() => apis.shell.open('https://github.com/edqe14/tasklists')}
+          onClick={() => shell.open('https://github.com/edqe14/tasklists')}
         >
           Tasklists
         </h1>
       </section>
 
       <section className="flex gap-4 items-center">
-        <MdMinimize size={size} className={clickable} onClick={() => apis.window.appWindow.minimize()} />
-        <FiMaximize size={size - 2} className={clickable} onClick={() => apis.window.appWindow.toggleMaximize()} />
-        <MdClose size={size} className={`hover:text-red-400 ${clickable}`} onClick={() => apis.window.appWindow.close()} />
+        <MdMinimize size={size} className={clickable} onClick={() => tauriWindow.appWindow.minimize()} />
+        <FiMaximize size={size - 2} className={clickable} onClick={() => tauriWindow.appWindow.toggleMaximize()} />
+        <MdClose size={size} className={`hover:text-red-400 ${clickable}`} onClick={() => tauriWindow.appWindow.close()} />
       </section>
     </section>
   );

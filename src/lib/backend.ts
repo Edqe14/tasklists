@@ -6,7 +6,6 @@ declare global {
   }
 }
 
-export const supportsTauri = () => !!window.__TAURI__;
-export const apis = window.__TAURI__;
+export const supportsTauri = () => !!window.__TAURI__ && !!window.__TAURI_IPC__;
 
 export default supportsTauri();

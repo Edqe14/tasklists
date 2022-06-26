@@ -4,8 +4,7 @@
     "beforeBuildCommand": "yarn build",
     "beforeDevCommand": "yarn dev",
     "devPath": "http://localhost:3000",
-    "distDir": "../dist",
-    "withGlobalTauri": true
+    "distDir": "../dist"
   },
   "package": {
     "productName": "tasklists",
@@ -22,6 +21,10 @@
       },
       "shell": {
         "open": true
+      },
+      "fs": {
+        "scope": ["$APP/data/*"],
+        "readFile": true
       }
     },
     "bundle": {

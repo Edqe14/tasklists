@@ -9,3 +9,9 @@
     @apply dark:bg-gray-700 dark:text-gray-50;
   }
 }
+
+@layer components {
+  .btn {
+    @apply px-2 py-1 mr-1 cursor-pointer bg-blue-400;
+  }
+}

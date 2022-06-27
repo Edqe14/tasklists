@@ -26,6 +26,7 @@ A simple and rich Typescript project template for your development needs.
 ### UI
 
 - [**Mantine**](https://mantine.dev/)
+- [**TipTap**](https://tiptap.dev/) *`rich text editor`*
 
 ### State Management
 

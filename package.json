@@ -36,11 +36,14 @@
     "@mantine/hooks": "4.2.10",
     "@mantine/notifications": "4.2.10",
     "@tauri-apps/api": "1.0.1",
+    "eventemitter3": "4.0.7",
     "nanoid": "4.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "4.4.0",
     "react-router-dom": "6.3.0",
+    "ts-mixer": "6.0.1",
+    "typed-emitter": "2.1.0",
     "zustand": "4.0.0-rc.1"
   },
   "devDependencies": {

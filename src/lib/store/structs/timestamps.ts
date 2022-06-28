@@ -11,6 +11,10 @@ class Timestamps {
   constructor({ createdAt, updatedAt }: TimestampsOptions) {
     this.createdAt = createdAt ?? new Date();
     this.updatedAt = updatedAt ?? new Date();
+
+    Object.defineProperty(this, 'createdAt', {
+      writable: false
+    });
   }
 
   public update() {

@@ -10,13 +10,16 @@ export interface CollectionOptions extends TimestampsOptions {
 export class Collection extends Base {
   public readonly id: string;
 
-  public readonly name: string;
+  public name: string;
 
   constructor({ id, name, createdAt, updatedAt }: CollectionOptions) {
     super({ createdAt, updatedAt });
 
     this.id = id ?? nanoid();
     this.name = name;
+
+    // Always call this
+    super.watch();
   }
 }
 

@@ -1,9 +1,14 @@
-import { nanoid } from 'nanoid';
+import Collection from '@/lib/store/structs/collection';
+
+const a = new Collection({ name: 'a' });
+a.on('changed', console.log);
 
 const Index = () => (
   <>
     <section className="mb-1">
-      <button className="btn" onClick={async () => console.log(nanoid())}>generate id</button>
+      <button className="btn" onClick={async () => {
+        a.name = `test ${ Date.now()}`;
+      }}>test</button>
     </section>
   </>
 );

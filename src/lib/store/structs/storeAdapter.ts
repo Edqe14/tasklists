@@ -50,6 +50,11 @@ class StoreAdapter<T, K = undefined> {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setAutoSaveHandler(handler: () => any) {
+    this.autoSaveHandler = handler;
+  }
+
   setAutoSaveInterval(interval: number | false) {
     if (interval === false) return this.disableAutoSave();
 

@@ -23,7 +23,7 @@
         "open": true
       },
       "fs": {
-        "scope": ["$APP/data/*"],
+        "scope": ["$APP/data/*", "$APP/data/settings.json"],
         "readFile": true
       }
     },

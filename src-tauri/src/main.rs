@@ -22,10 +22,25 @@ async fn write_store(app: tauri::AppHandle, name: String, data: String) -> Resul
   Ok(())
 }
 
+#[tauri::command]
+async fn write_config(app: tauri::AppHandle, data: String) -> Result<(), String> {
+  let app_dir = app.path_resolver().app_dir().expect("failed to get app dir");
+  let path = app_dir.join("settings.json");
+
+  if !std::path::Path::new(&app_dir).exists() {
+    std::fs::create_dir_all(app_dir).expect("failed to create data dir");
+  }
+
+  std::fs::write(&path, data)
+    .map_err(|e| e.to_string());
+
+  Ok(())
+}
+
 fn main() {
   let context = tauri::generate_context!();
   tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![write_store])
+    .invoke_handler(tauri::generate_handler![write_store, write_config])
     .setup(|app| {
       let win = app.get_window("main").unwrap();
       set_shadow(&win, true).expect("Unsupported platform!");

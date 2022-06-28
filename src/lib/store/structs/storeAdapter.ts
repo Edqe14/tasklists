@@ -10,8 +10,8 @@ export interface Strategy<T, K = undefined> {
 export interface StoreAdapterOptions<T, K = undefined> {
   strategy: Strategy<T, K>;
   autoSave?: number | false;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  autoSaveHandler?: () => any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any,no-use-before-define
+  autoSaveHandler?: (adapter: StoreAdapter<T, K>) => any;
   data?: K;
 }
 
@@ -32,8 +32,7 @@ class StoreAdapter<T, K = undefined> {
     return this._autoSave;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected autoSaveHandler?: () => any;
+  protected autoSaveHandler?: StoreAdapterOptions<T, K>['autoSaveHandler'];
 
   private timer: NodeJS.Timeout | null = null;
 
@@ -50,8 +49,7 @@ class StoreAdapter<T, K = undefined> {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setAutoSaveHandler(handler: () => any) {
+  setAutoSaveHandler(handler: NonNullable<StoreAdapterOptions<T, K>['autoSaveHandler']>) {
     this.autoSaveHandler = handler;
   }
 
@@ -70,7 +68,7 @@ class StoreAdapter<T, K = undefined> {
     const handler = async () => {
       if (!this.autoSaveHandler) throw new Error('Missing "autoSaveHandler"');
 
-      await this.autoSaveHandler();
+      await this.autoSaveHandler(this);
 
       this.timer = setTimeout(handler, this._autoSave as number);
     };

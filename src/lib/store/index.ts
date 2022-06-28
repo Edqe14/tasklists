@@ -3,7 +3,7 @@ import create from 'zustand';
 import { supportsTauri } from '../backend';
 
 import LocalStorageStrategy from './strategies/localStorage';
-import TauriFileSystemStrategy from './strategies/tauriFileSystem';
+import TauriFileSystemStrategy, { TauriFileSystemStrategyOptions } from './strategies/tauriFileSystem';
 import StoreAdapter from './structs/storeAdapter';
 
 interface TestData {
@@ -12,14 +12,17 @@ interface TestData {
 
 export interface StoreState {
   theme: ColorScheme;
-  adapter: StoreAdapter<TestData>;
+  adapter: StoreAdapter<TestData, TauriFileSystemStrategyOptions>;
   setTheme: (theme: ColorScheme) => void;
 }
 
-const testAdapter = new StoreAdapter<TestData>('test', {
+const testAdapter = new StoreAdapter<TestData, TauriFileSystemStrategyOptions>('test', {
   strategy: supportsTauri()
     ? new TauriFileSystemStrategy<TestData>({ foo: 'bar' })
     : new LocalStorageStrategy<TestData>({ foo: 'bar' }),
+  data: {
+    dir: ['data']
+  },
   autoSave: 15_000,
   autoSaveHandler: async () => {
     const payload = { foo: `baz ${Date.now()}` };

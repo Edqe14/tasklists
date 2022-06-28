@@ -1,7 +1,6 @@
-import Promisable from '@/lib/helpers/promisable';
 import { Strategy } from '../structs/storeAdapter';
 
-class LocalStorageStrategy<T, K = undefined> implements Strategy<T, K> {
+class LocalStorageStrategy<T> implements Strategy<T> {
   protected readonly defaults: T;
 
   constructor(defaults: T) {

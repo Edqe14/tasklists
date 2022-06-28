@@ -1,16 +1,20 @@
 import { fs, invoke, path } from '@tauri-apps/api';
 import { Strategy } from '../structs/storeAdapter';
 
-class TauriFileSystemStrategy<T, K = undefined> implements Strategy<T, K> {
+export interface TauriFileSystemStrategyOptions {
+  dir: string[]; // Relative directory before the file name
+}
+
+class TauriFileSystemStrategy<T> implements Strategy<T, TauriFileSystemStrategyOptions> {
   protected readonly defaults: T;
 
   constructor(defaults: T) {
     this.defaults = defaults;
   }
 
-  async read(name: string): Promise<T> {
+  async read(name: string, options?: TauriFileSystemStrategyOptions): Promise<T> {
     try {
-      const data = await fs.readTextFile(`data#${name}.json`.replace(/#/gi, path.sep), {
+      const data = await fs.readTextFile([...(options?.dir ?? []), `${name}.json`].join(path.sep), {
         dir: fs.Dir.App
       });
 
@@ -23,9 +27,11 @@ class TauriFileSystemStrategy<T, K = undefined> implements Strategy<T, K> {
     }
   }
 
-  async write(name: string, data: T): Promise<void> {
+  async write(name: string, data: T, options?: TauriFileSystemStrategyOptions): Promise<void> {
     try {
-      await invoke('write_store', { name, data: this.serialize(data) });
+      await fs.writeTextFile([...(options?.dir ?? []), `${name}.json`].join(path.sep), this.serialize(data), {
+        dir: fs.Dir.App
+      });
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);

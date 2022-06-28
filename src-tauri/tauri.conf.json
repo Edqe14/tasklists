@@ -23,8 +23,9 @@
         "open": true
       },
       "fs": {
-        "scope": ["$APP/data/*", "$APP/data/settings.json"],
-        "readFile": true
+        "scope": ["$APP/*"],
+        "readFile": true,
+        "writeFile": true
       }
     },
     "bundle": {

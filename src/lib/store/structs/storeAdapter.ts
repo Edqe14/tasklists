@@ -37,7 +37,6 @@ class StoreAdapter<T, K = undefined> {
 
   private timer: NodeJS.Timeout | null = null;
 
-
   constructor(name: string, options: StoreAdapterOptions<T, K>) {
     this.name = name;
     this.options = options;
@@ -80,12 +79,14 @@ class StoreAdapter<T, K = undefined> {
     if (this.timer !== null) clearTimeout(this.timer);
   }
 
-  read() {
-    return this.strategy.read(this.name, this.options.data);
+  read(options?: K & { name: string }) {
+    // eslint-disable-next-line prefer-object-spread
+    return this.strategy.read(options?.name ?? this.name, Object.assign({}, this.options.data, options));
   }
 
-  write(data: T) {
-    return this.strategy.write(this.name, data, this.options.data);
+  write(data: T, options?: K & { name: string }) {
+    // eslint-disable-next-line prefer-object-spread
+    return this.strategy.write(options?.name ?? this.name, data, Object.assign({}, this.options.data, options));
   }
 
   use(strategy: Strategy<T, K>) {

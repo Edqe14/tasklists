@@ -1,4 +1,4 @@
-import { fs, invoke, path } from '@tauri-apps/api';
+import { fs, path } from '@tauri-apps/api';
 import { Strategy } from '../structs/storeAdapter';
 
 export interface TauriFileSystemStrategyOptions {

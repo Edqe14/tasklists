@@ -89,8 +89,11 @@ class StoreAdapter<T, K = undefined> {
     return this.strategy.write(options?.name ?? this.name, data, Object.assign({}, this.options.data, options));
   }
 
-  use(strategy: Strategy<T, K>) {
-    return new StoreAdapter(this.name, { ...this.options, strategy });
+  use(name?: string, data?: K) {
+    return new StoreAdapter(name ?? this.name, {
+      ...this.options,
+      data: data ?? this.options.data
+    });
   }
 }
 

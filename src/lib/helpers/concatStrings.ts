@@ -1,4 +1,4 @@
-type Filterable = string | boolean | null | undefined;
+import Filterable from './types/filterable';
 
 const concatStrings = (...strings: Filterable[]) => strings.filter((s) => !!s).join(' ');
 

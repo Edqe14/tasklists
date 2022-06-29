@@ -7,7 +7,7 @@ interface AllProps {
   collections: Collections;
 }
 
-export interface StoreState {
+export type StoreState = {
   ready: boolean;
   theme: ColorScheme;
 
@@ -21,9 +21,9 @@ export interface StoreState {
   appendCollections: (...collections: Collection[]) => void;
 
   saveCollections: () => void;
-}
+};
 
-const store = create<StoreState>()((set) => ({
+const store = create<StoreState>((set, get) => ({
   // Global
   ready: false,
   theme: 'dark',
@@ -57,10 +57,10 @@ const store = create<StoreState>()((set) => ({
       return ({ collections: [...state.collections, ...collections] });
     });
 
-    store.getState().saveCollections();
+    get().saveCollections();
   },
 
-  saveCollections: () => collectionAdapter.write(store.getState().collections),
+  saveCollections: () => collectionAdapter.write(get().collections),
 }));
 
 const init = async () => {

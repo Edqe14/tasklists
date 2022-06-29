@@ -36,6 +36,8 @@
     "@mantine/hooks": "4.2.10",
     "@mantine/notifications": "4.2.10",
     "@tauri-apps/api": "1.0.1",
+    "@tiptap/react": "2.0.0-beta.114",
+    "@tiptap/starter-kit": "2.0.0-beta.190",
     "eventemitter3": "4.0.7",
     "nanoid": "4.0.0",
     "react": "18.2.0",

@@ -24,6 +24,24 @@ export class Collection extends Base {
 
     this.on('__save', () => store.getState().saveCollections());
   }
+
+  static resolve(resolvable: string, createOnNotFound: true): Collection;
+
+  static resolve(resolvable: string, createOnNotFound: false): Collection | undefined;
+
+  static resolve(resolvable: string, createOnNotFound = false): Collection | undefined {
+    const state = store.getState();
+    const collection = state.collections.find((c) => c.id === resolvable || c.name === resolvable);
+
+    if (!collection && createOnNotFound) {
+      const coll = new Collection({ name: resolvable });
+      state.appendCollections(coll);
+
+      return coll;
+    }
+
+    return collection;
+  }
 }
 
 export type Collections = Collection[];

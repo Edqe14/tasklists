@@ -11,12 +11,7 @@ const collectionAdapter = new StoreAdapter<Collections, TauriFileSystemStrategyO
       deserialize(data) {
         const val = JSON.parse(data) as CollectionOptions[];
 
-        return val.map((v) => {
-          const coll = new Collection(v);
-          coll.on('__save', () => store.getState().saveCollections());
-
-          return coll;
-        });
+        return val.map((v) => new Collection(v));
       },
     })
     : new LocalStorageStrategy<Collections>([]),

@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+import store from '..';
 import Base from './base';
 import { TimestampsOptions } from './timestamps';
 
@@ -20,6 +21,8 @@ export class Collection extends Base {
 
     // Always call this
     super.watch();
+
+    this.on('__save', () => store.getState().saveCollections());
   }
 }
 

@@ -37,26 +37,9 @@ const store = create<StoreState>((set, get) => ({
 
   // Variable setters
   setAll: (props) => set(props),
-  setCollections: (collections) => {
-    set((state) => {
-      collections.forEach((v) => v
-        .removeAllListeners('__save')
-        .on('__save', () => state.saveCollections())
-      );
-
-      return ({ collections });
-    });
-  },
+  setCollections: (collections) => set(({ collections })),
   appendCollections: (...collections) => {
-    set((state) => {
-      collections.forEach((v) => v
-        .removeAllListeners('__save')
-        .on('__save', () => state.saveCollections())
-      );
-
-      return ({ collections: [...state.collections, ...collections] });
-    });
-
+    set((state) => ({ collections: [...state.collections, ...collections] }));
     get().saveCollections();
   },
 

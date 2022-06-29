@@ -1,35 +1,40 @@
 import { fs, path } from '@tauri-apps/api';
-import { Strategy } from '../structs/storeAdapter';
+import getCircularReplacer from '@/lib/helpers/getCircularReplacer';
+import { Serializible, Strategy } from '../structs/storeAdapter';
 
-export interface TauriFileSystemStrategyOptions {
-  dir: string[]; // Relative directory before the file name
+export interface TauriFileSystemStrategyOptions<T> extends Serializible<T> {
+  dir?: string[]; // Relative directory before the file name
 }
 
-class TauriFileSystemStrategy<T> implements Strategy<T, TauriFileSystemStrategyOptions> {
+class TauriFileSystemStrategy<T> implements Strategy<T, TauriFileSystemStrategyOptions<T>> {
   protected readonly defaults: T;
 
-  constructor(defaults: T) {
+  protected readonly serializer: Serializible<T> = {};
+
+  constructor(defaults: T, serializer: Serializible<T> = {}) {
     this.defaults = defaults;
+    this.serializer = serializer;
   }
 
-  async read(name: string, options?: TauriFileSystemStrategyOptions): Promise<T> {
+  async read(name: string, options?: TauriFileSystemStrategyOptions<T>): Promise<T> {
     try {
-      const data = await fs.readTextFile([...(options?.dir ?? []), `${name}.json`].join(path.sep), {
+      const data = await fs.readTextFile([...(options?.dir ?? ['data']), `${name}.json`].join(path.sep), {
         dir: fs.Dir.App
       });
 
-      return this.deserialize(data) ?? this.defaults;
+      return (options?.deserialize ? options.deserialize(data) : this.deserialize(data)) ?? this.defaults;
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.error(err);
+      console.warn(err);
 
       return this.defaults;
     }
   }
 
-  async write(name: string, data: T, options?: TauriFileSystemStrategyOptions): Promise<void> {
+  async write(name: string, data: T, options?: TauriFileSystemStrategyOptions<T>): Promise<void> {
     try {
-      await fs.writeTextFile([...(options?.dir ?? []), `${name}.json`].join(path.sep), this.serialize(data), {
+      const strData = options?.serialize ? options.serialize(data) : this.serialize(data);
+      await fs.writeTextFile([...(options?.dir ?? ['data']), `${name}.json`].join(path.sep), strData, {
         dir: fs.Dir.App
       });
     } catch (err) {
@@ -39,11 +44,14 @@ class TauriFileSystemStrategy<T> implements Strategy<T, TauriFileSystemStrategyO
   }
 
   serialize(data: T): string {
-    return JSON.stringify(data);
+    if (this.serializer.serialize) return this.serializer.serialize(data);
+
+    return JSON.stringify(data, getCircularReplacer());
   }
 
   deserialize(data: string | null): T | null {
     if (!data) return null;
+    if (this.serializer.deserialize) return this.serializer.deserialize(data);
 
     return JSON.parse(data);
   }

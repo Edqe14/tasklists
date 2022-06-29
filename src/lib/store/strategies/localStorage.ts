@@ -1,3 +1,4 @@
+import getCircularReplacer from '@/lib/helpers/getCircularReplacer';
 import { Strategy } from '../structs/storeAdapter';
 
 class LocalStorageStrategy<T> implements Strategy<T> {
@@ -24,7 +25,7 @@ class LocalStorageStrategy<T> implements Strategy<T> {
   }
 
   serialize(data: T): string {
-    return JSON.stringify(data);
+    return JSON.stringify(data, getCircularReplacer());
   }
 
   deserialize(data: string | null): T | null {

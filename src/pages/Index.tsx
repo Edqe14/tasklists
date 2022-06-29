@@ -1,16 +1,23 @@
+import shallow from 'zustand/shallow';
+import useStore from '@/lib/store';
 import Collection from '@/lib/store/structs/collection';
 
-const a = new Collection({ name: 'a' });
-a.on('changed', console.log);
+const Index = () => {
+  const { collections, appendCollections } = useStore((state) => ({ appendCollections: state.appendCollections, collections: state.collections }), shallow);
 
-const Index = () => (
-  <>
-    <section className="mb-1">
-      <button className="btn" onClick={async () => {
-        a.name = `test ${ Date.now()}`;
-      }}>test</button>
-    </section>
-  </>
-);
+  console.log(collections);
+
+  return (
+    <>
+      <section className="mb-1">
+        <button className="btn" onClick={() => appendCollections(new Collection({ name: 'WOEEE' }))}>test</button>
+      </section>
+
+      <section>
+        {collections.map((v) => (<p key={v.id}>{v.toString()}</p>))}
+      </section>
+    </>
+  );
+};
 
 export default Index;

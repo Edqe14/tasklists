@@ -12,8 +12,8 @@ export class Collection extends Base {
 
   public name: string;
 
-  constructor({ id, name, createdAt, updatedAt }: CollectionOptions) {
-    super({ createdAt, updatedAt });
+  constructor({ id, name, ...timestamps }: CollectionOptions) {
+    super(timestamps);
 
     this.id = id ?? nanoid();
     this.name = name;
@@ -23,5 +23,5 @@ export class Collection extends Base {
   }
 }
 
-export type Collections = Record<string, Collection>;
+export type Collections = Collection[];
 export default Collection;

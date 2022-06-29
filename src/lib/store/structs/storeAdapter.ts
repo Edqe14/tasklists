@@ -1,5 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 
+export interface Serializible<T> {
+  serialize?: (data: T) => string;
+  deserialize?: (data: string) => T;
+}
+
 export type Promisable<T> = T | Promise<T>;
 
 export interface Strategy<T, K = undefined> {

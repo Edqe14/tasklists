@@ -11,6 +11,9 @@ const Index = () => {
     <>
       <section className="mb-1">
         <button className="btn" onClick={() => appendCollections(new Collection({ name: 'WOEEE' }))}>test</button>
+        <button className="btn" onClick={() => {collections[0].name = `WOEEE ${Date.now()}`; }}>CHANGE</button>
+        {/* eslint-disable-next-line no-param-reassign */}
+        <button className="btn" onClick={() => collections.forEach((v, i) => { v.name = `WOEEEE ${i + Math.floor(Math.random() * 10000)}`;})}>CHANGE ALL</button>
       </section>
 
       <section>

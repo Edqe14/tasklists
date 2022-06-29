@@ -60,7 +60,12 @@ const store = create<StoreState>((set, get) => ({
     get().saveCollections();
   },
 
-  saveCollections: () => collectionAdapter.write(get().collections),
+  saveCollections: () => {
+    const all = get().collections;
+
+    set({ collections: [...all] });
+    collectionAdapter.write(all);
+  },
 }));
 
 const init = async () => {

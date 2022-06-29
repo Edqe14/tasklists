@@ -1,9 +1,8 @@
 import { supportsTauri } from '@/lib/backend';
-import store from '..';
 import LocalStorageStrategy from '../strategies/localStorage';
 import TauriFileSystemStrategy, { TauriFileSystemStrategyOptions } from '../strategies/tauriFileSystem';
 import Collection, { CollectionOptions, Collections } from '../structs/collection';
-import StoreAdapter from '../structs/storeAdapter';
+import StoreAdapter from '../structs/adapter';
 
 const collectionAdapter = new StoreAdapter<Collections, TauriFileSystemStrategyOptions<Collections>>('collections', {
   strategy: supportsTauri()

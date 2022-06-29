@@ -1,6 +1,6 @@
 import { fs, path } from '@tauri-apps/api';
 import getCircularReplacer from '@/lib/helpers/getCircularReplacer';
-import { Serializible, Strategy } from '../structs/storeAdapter';
+import { Serializible, Strategy } from '../structs/adapter';
 
 export interface TauriFileSystemStrategyOptions<T> extends Serializible<T> {
   dir?: string[]; // Relative directory before the file name

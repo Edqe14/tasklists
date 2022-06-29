@@ -1,5 +1,5 @@
 import getCircularReplacer from '@/lib/helpers/getCircularReplacer';
-import { Strategy } from '../structs/storeAdapter';
+import { Strategy } from '../structs/adapter';
 
 class LocalStorageStrategy<T> implements Strategy<T> {
   protected readonly defaults: T;

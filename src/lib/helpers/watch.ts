@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 const ignoreList = [
-  'updatedAt',
+  'updatedAt', 'length', '__proto__', 'constructor',
 ];
 
 const watch = (obj: any, handle: (val: { name: string; value: any }) => any, prefix?: string[]) => {

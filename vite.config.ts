@@ -28,6 +28,8 @@ export default defineConfig({
     }
   },
   test: {
-    environments: 'jsdom'
+    environments: 'jsdom',
+    reporters: 'verbose',
+    passWithNoTests: true
   }
 });

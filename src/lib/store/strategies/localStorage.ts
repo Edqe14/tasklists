@@ -1,11 +1,14 @@
 import getCircularReplacer from '@/lib/helpers/getCircularReplacer';
-import { Strategy } from '../structs/adapter';
+import { Serializible, Strategy } from '../structs/adapter';
 
-class LocalStorageStrategy<T> implements Strategy<T> {
+class LocalStorageStrategy<T> implements Strategy<T, Serializible<T>> {
   protected readonly defaults: T;
 
-  constructor(defaults: T) {
+  protected readonly serializer: Serializible<T> = {};
+
+  constructor(defaults: T, serializer: Serializible<T> = {}) {
     this.defaults = defaults;
+    this.serializer = serializer;
   }
 
   set(name: string, data: T) {
@@ -25,11 +28,14 @@ class LocalStorageStrategy<T> implements Strategy<T> {
   }
 
   serialize(data: T): string {
+    if (this.serializer.serialize) return this.serializer.serialize(data);
+
     return JSON.stringify(data, getCircularReplacer());
   }
 
   deserialize(data: string | null): T | null {
     if (!data) return null;
+    if (this.serializer.deserialize) return this.serializer.deserialize(data);
 
     return JSON.parse(data);
   }

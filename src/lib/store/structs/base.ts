@@ -8,7 +8,7 @@ import getCircularReplacer from '@/lib/helpers/getCircularReplacer';
 type BaseEvents = {
   __save: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  changed: (value: { name: string; value: any }) => any;
+  changed: (value?: { name: string; value: any }) => any;
 };
 
 class Base extends Mixin(Timestamps, EventEmitter as new () => TypedEventEmitter<BaseEvents>) {
@@ -18,6 +18,12 @@ class Base extends Mixin(Timestamps, EventEmitter as new () => TypedEventEmitter
       this.emit('changed', val);
       this.emit('__save');
     });
+  }
+
+  public markChanged() {
+    this.update();
+    this.emit('changed');
+    this.emit('__save');
   }
 
   public toString() {

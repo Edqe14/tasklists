@@ -22,7 +22,7 @@ export class Task extends Base {
 
   public description?: JSONContent;
 
-  public collections: string[] = [];
+  public collections: Collection[] = [];
 
   public order: Record<string, number> = {};
 
@@ -37,7 +37,7 @@ export class Task extends Base {
     this.name = name;
     this.description = description;
     this.collections = (collections ?? [])
-      .map((v) => Collection.resolve(v, true).id);
+      .map((v) => Collection.resolve(v, true));
     this.order = order ?? {};
     this.starred = starred ?? false;
     this.deadline = deadline;
@@ -46,6 +46,27 @@ export class Task extends Base {
     super.watch();
 
     this.on('__save', () => store.getState().saveTasks());
+  }
+
+  public toJSON() {
+    return {
+      ...this,
+      collections: this.collections.map((c) => c.id)
+    };
+  }
+
+  static resolve(resolvable: string, createOnNotFound = false): Collection | undefined {
+    const state = store.getState();
+    const task = state.tasks.find((c) => c.id === resolvable || c.name === resolvable);
+
+    if (!task && createOnNotFound) {
+      const temp = new Task({ name: resolvable });
+      state.appendTasks(temp);
+
+      return temp;
+    }
+
+    return task;
   }
 }
 

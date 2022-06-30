@@ -77,14 +77,18 @@ const store = create<StoreState>((set, get) => ({
 }));
 
 const init = async () => {
-  const [collections, tasks] = await Promise.all([
-    collectionAdapter.read(),
+  const collections = await collectionAdapter.read();
+  store.setState({ collections });
+
+  const [tasks] = await Promise.all([
     taskAdapter.read(),
   ]);
 
-  const state = store.getState();
-  state.setAll({ collections, tasks });
-  state.setReady(true);
+  store.setState({
+    ready: true,
+
+    tasks,
+  });
 };
 
 init();

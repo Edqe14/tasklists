@@ -1,11 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 
-export interface Serializible<T> {
-  serialize?: (data: T) => string;
-  deserialize?: (data: string) => T;
-}
-
-export type Promisable<T> = T | Promise<T>;
+import Promisable from '@/lib/helpers/types/promisable';
 
 export interface Strategy<T, K = undefined> {
   read(name: string, options?: K): Promisable<T>;

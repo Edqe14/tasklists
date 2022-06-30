@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-scheme: transparent;
+}
+
 @layer base {
   body {
     @apply font-jetBrainsMono;
@@ -12,6 +16,6 @@
 
 @layer components {
   .btn {
-    @apply px-2 py-1 mr-1 cursor-pointer bg-blue-400;
+    @apply px-2 py-1 mr-1 cursor-pointer bg-scheme;
   }
 }

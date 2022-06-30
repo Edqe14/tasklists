@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom';
 import { useLocalStorage } from '@mantine/hooks';
 import shallow from 'zustand/shallow';
-import { ColorScheme } from '@mantine/core';
+import { ColorScheme, MantineProvider } from '@mantine/core';
 import Index from './pages/Index';
 import isTauri from './lib/backend';
 import Titlebar from './components/Titlebar';
@@ -43,13 +43,20 @@ const Entry = () => {
       <>
         {isTauri && <Titlebar />}
 
-        <Container>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-            </Routes>
-          </BrowserRouter>
-        </Container>
+        <MantineProvider
+          theme={{
+            colorScheme: storeTheme,
+          }}
+          emotionOptions={{ key: 'mantine', prepend: false }}
+        >
+          <Container>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+              </Routes>
+            </BrowserRouter>
+          </Container>
+        </MantineProvider>
       </>
     )
   );

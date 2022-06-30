@@ -24,6 +24,7 @@ module.exports = {
           800: '#141414',
           900: '#0a0a0a'
         },
+        scheme: 'var(--color-scheme)',
       }
     },
   },

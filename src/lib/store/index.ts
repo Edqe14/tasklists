@@ -13,12 +13,14 @@ interface AllProps {
 export type StoreState = {
   ready: boolean;
   theme: ColorScheme;
+  color: string;
 
   collections: AllProps['collections'];
   tasks: AllProps['tasks'];
 
   setReady: (state: boolean) => void;
   setTheme: (theme: ColorScheme) => void;
+  setColor: (color: string) => void;
 
   setAll: (props: AllProps) => void;
 
@@ -37,6 +39,7 @@ const store = create<StoreState>((set, get) => ({
   // Global
   ready: false,
   theme: 'dark',
+  color: '#3f74e7',
 
   // Variables
   collections: [],
@@ -45,6 +48,7 @@ const store = create<StoreState>((set, get) => ({
   // Global methods
   setReady: (state) => set({ ready: state }),
   setTheme: (theme) => set({ theme }),
+  setColor: (color) => set({ color }),
 
   // Variable setters
   setAll: (props) => set(props),
@@ -75,6 +79,13 @@ const store = create<StoreState>((set, get) => ({
     taskAdapter.write(all);
   },
 }));
+
+store.subscribe((state) => {
+  const root = document.querySelector<HTMLElement>(':root');
+  if (root) {
+    root.style.setProperty('--color-scheme', state.color);
+  }
+});
 
 const init = async () => {
   const collections = await collectionAdapter.read();

@@ -1,9 +1,15 @@
 import shallow from 'zustand/shallow';
+import { ColorInput } from '@mantine/core';
 import useStore from '@/lib/store';
 import Collection from '@/lib/store/structs/collection';
 
 const Index = () => {
-  const { collections, appendCollections } = useStore((state) => ({ appendCollections: state.appendCollections, collections: state.collections }), shallow);
+  const { collections, appendCollections, color, setColor } = useStore((state) => ({
+    appendCollections: state.appendCollections,
+    collections: state.collections,
+    color: state.color,
+    setColor: state.setColor,
+  }), shallow);
 
   console.log(collections);
 
@@ -15,6 +21,8 @@ const Index = () => {
         {/* eslint-disable-next-line no-param-reassign */}
         <button className="btn" onClick={() => collections.forEach((v, i) => { v.name = `WOEEEE ${i + Math.floor(Math.random() * 10000)}`;})}>CHANGE ALL</button>
       </section>
+
+      <ColorInput value={color} onChange={setColor} />
 
       <section>
         {collections.map((v) => (<p key={v.id}>{v.toString()}</p>))}

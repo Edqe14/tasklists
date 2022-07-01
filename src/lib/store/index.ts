@@ -1,5 +1,5 @@
 import { ColorScheme } from '@mantine/core';
-import { debounce, mapValues, pick, pickBy } from 'lodash-es';
+import { mapValues, pickBy } from 'lodash-es';
 import create from 'zustand';
 import collectionAdapter from './adapters/collections';
 import settingsAdapter, { settingsDefault } from './adapters/settings';
@@ -9,6 +9,9 @@ import Settings from './structs/settings';
 import Task, { Tasks } from './structs/task';
 import settingsChanged from '../helpers/settingsChanged';
 import logger from '../logger';
+import saveSettingsDebouncer from './debouncers/saveSettings';
+import saveCollectionsDebouncer from './debouncers/saveCollections';
+import saveTasksDebouncer from './debouncers/saveTasks';
 
 interface AllProps {
   collections: Collections;
@@ -78,32 +81,6 @@ store.subscribe((state, prev) => {
   }
 });
 
-// Saving functions
-const debounceWait = 200;
-const saveSettingsDebouncer = debounce(async () => {
-  const curr = pick(store.getState(), Object.keys(settingsDefault));
-
-  await settingsAdapter.write(curr as Settings);
-
-  logger.success('saved settings', curr);
-}, debounceWait);
-
-const saveCollectionsDebouncer = debounce(async () => {
-  logger.trace('saving collections');
-
-  await collectionAdapter.write(store.getState().collections);
-
-  logger.success('saved collections');
-}, debounceWait);
-
-const saveTasksDebouncer = debounce(async () => {
-  logger.trace('saving tasks');
-
-  await taskAdapter.write(store.getState().tasks);
-
-  logger.success('saved tasks');
-}, debounceWait);
-
 // Startup
 const init = async () => {
   logger.info('initiating...');
@@ -113,7 +90,6 @@ const init = async () => {
     settingsAdapter.read(),
     collectionAdapter.read(),
   ]);
-  console.log(settings);
 
   store.setState({ ...settings, collections });
   logger.info('loaded settings and collections');

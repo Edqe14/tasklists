@@ -2,6 +2,7 @@ import shallow from 'zustand/shallow';
 import { ColorInput } from '@mantine/core';
 import useStore from '@/lib/store';
 import Collection from '@/lib/store/structs/collection';
+import Loading from '@/components/Loading';
 
 const Index = () => {
   const { collections, appendCollections, color, setColor } = useStore((state) => ({
@@ -21,6 +22,10 @@ const Index = () => {
       </section>
 
       <ColorInput value={color} onChange={setColor} />
+
+      <section className="w-32 h-32 relative">
+        <Loading visible={false} />
+      </section>
 
       <section>
         {collections.map((v) => (<p key={v.id}>{v.toString()}</p>))}

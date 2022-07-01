@@ -12,6 +12,7 @@ import logger from '../logger';
 import saveSettingsDebouncer from './debouncers/saveSettings';
 import saveCollectionsDebouncer from './debouncers/saveCollections';
 import saveTasksDebouncer from './debouncers/saveTasks';
+import sleep from '../helpers/sleep';
 
 interface AllProps {
   collections: Collections;
@@ -83,27 +84,35 @@ store.subscribe((state, prev) => {
 
 // Startup
 const init = async () => {
-  logger.info('initiating...');
-  logger.trace('loading settings and collections');
+  const start = async () => {
+    logger.info('initiating...');
+    logger.trace('loading settings and collections');
 
-  const [settings, collections] = await Promise.all([
-    settingsAdapter.read(),
-    collectionAdapter.read(),
+    const [settings, collections] = await Promise.all([
+      settingsAdapter.read(),
+      collectionAdapter.read(),
+    ]);
+
+    store.setState({ ...settings, collections });
+    logger.info('loaded settings and collections');
+    logger.trace('loading other modules');
+
+    const [tasks] = await Promise.all([
+      taskAdapter.read(),
+    ]);
+
+    logger.info('loaded modules');
+    store.setState({
+      tasks,
+    });
+  };
+
+  await Promise.all([
+    start(),
+    sleep(1000)
   ]);
 
-  store.setState({ ...settings, collections });
-  logger.info('loaded settings and collections');
-  logger.trace('loading other modules');
-
-  const [tasks] = await Promise.all([
-    taskAdapter.read(),
-  ]);
-
-  logger.info('loaded modules');
-  store.setState({
-    ready: true,
-    tasks,
-  });
+  store.setState({ ready: true });
 
   // Listen for changes
   store.subscribe((state, prev) => {

@@ -10,11 +10,13 @@ import {
 import { useLocalStorage } from '@mantine/hooks';
 import shallow from 'zustand/shallow';
 import { ColorScheme, MantineProvider } from '@mantine/core';
+import { pick } from 'lodash-es';
 import Index from './pages/Index';
 import isTauri from './lib/backend';
 import Titlebar from './components/Titlebar';
 import Container from './components/Container';
 import useStore from './lib/store';
+import Loading from './components/Loading';
 
 const updateTheme = () => {
   if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -27,16 +29,20 @@ const updateTheme = () => {
 updateTheme();
 
 const Entry = () => {
-  const [theme] = useLocalStorage({ key: 'theme', defaultValue: 'dark', serialize: (v) => v });
-  const [storeTheme, setStoreTheme] = useStore((state) => [state.theme, state.setTheme], shallow);
+  const [storedTheme] = useLocalStorage({ key: 'theme', defaultValue: 'dark', serialize: (v) => v });
+  const {
+    theme,
+    setTheme,
+    ready
+  } = useStore((state) => pick(state, ['theme', 'setTheme', 'ready']), shallow);
 
   useEffect(() => {
     updateTheme();
-  }, [theme, storeTheme]);
+  }, [storedTheme, theme]);
 
   useEffect(() => {
-    setStoreTheme(theme as ColorScheme);
-  }, [theme]);
+    setTheme(storedTheme as ColorScheme);
+  }, [storedTheme]);
 
   return (
     (
@@ -45,11 +51,12 @@ const Entry = () => {
 
         <MantineProvider
           theme={{
-            colorScheme: storeTheme,
+            colorScheme: theme,
           }}
-          emotionOptions={{ key: 'mantine', prepend: false }}
         >
           <Container>
+            <Loading visible={!ready} />
+
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Index />} />

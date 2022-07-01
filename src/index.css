@@ -12,6 +12,11 @@
     @apply bg-slate-50 text-gray-800;
     @apply dark:bg-gray-700 dark:text-gray-50;
   }
+
+  #root {
+    @apply flex flex-col;
+    @apply min-h-screen w-screen;
+  }
 }
 
 @layer components {

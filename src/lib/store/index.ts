@@ -68,15 +68,16 @@ const store = create<StoreState>((set) => ({
   appendTasks: (...tasks) => set((state) => ({ tasks: [...state.tasks, ...tasks] })),
 }));
 
-// Apply color schemes
-store.subscribe((state) => {
+// Update color scheme
+store.subscribe((state, prev) => {
+  if (state.color === prev.color) return;
+
   const root = document.querySelector<HTMLElement>(':root');
   if (root) {
     root.style.setProperty('--color-scheme', state.color);
   }
 });
 
-// TODO: Make save task & collection this way
 // Saving functions
 const debounceWait = 200;
 const saveSettingsDebouncer = debounce(async () => {
@@ -112,6 +113,7 @@ const init = async () => {
     settingsAdapter.read(),
     collectionAdapter.read(),
   ]);
+  console.log(settings);
 
   store.setState({ ...settings, collections });
   logger.info('loaded settings and collections');

@@ -1,11 +1,14 @@
 import { ColorScheme } from '@mantine/core';
+import { debounce, pick } from 'lodash-es';
 import create from 'zustand';
+import consola from 'consola';
 import collectionAdapter from './adapters/collections';
-import { settingsDefault } from './adapters/settings';
+import settingsAdapter, { settingsDefault } from './adapters/settings';
 import taskAdapter from './adapters/tasks';
 import Collection, { Collections } from './structs/collection';
 import Settings from './structs/settings';
 import Task, { Tasks } from './structs/task';
+import settingsChanged from '../helpers/settingsChanged';
 
 interface AllProps {
   collections: Collections;
@@ -22,18 +25,19 @@ export type StoreState = {
   setReady: (state: boolean) => void;
   setTheme: (theme: ColorScheme) => void;
   setColor: (color: string) => void;
-
   setAll: (props: AllProps) => void;
+
+  saveSettings: () => Promise<void>;
 
   // Collections
   setCollections: (collections: AllProps['collections']) => void;
   appendCollections: (...collections: Collection[]) => void;
-  saveCollections: () => void;
+  saveCollections: () => Promise<void>;
 
   // Tasks
   setTasks: (tasks: AllProps['tasks']) => void;
   appendTasks: (...tasks: Task[]) => void;
-  saveTasks: () => void;
+  saveTasks: () => Promise<void>;
 } & Settings;
 
 const store = create<StoreState>((set, get) => ({
@@ -54,17 +58,28 @@ const store = create<StoreState>((set, get) => ({
   // Variable setters
   setAll: (props) => set(props),
 
+  saveSettings: async () => {
+    const curr = pick(get(), Object.keys(settingsDefault));
+
+    await settingsAdapter.write(curr as Settings);
+
+    consola.success('saved settings', curr);
+  },
+
   // Collections
   setCollections: (collections) => set(({ collections })),
   appendCollections: (...collections) => {
     set((state) => ({ collections: [...state.collections, ...collections] }));
     get().saveCollections();
   },
-  saveCollections: () => {
+  saveCollections: async () => {
     const all = get().collections;
 
     set({ collections: [...all] });
-    collectionAdapter.write(all);
+
+    await collectionAdapter.write(all);
+
+    consola.success('saved collections', all);
   },
 
   // Tasks
@@ -73,14 +88,18 @@ const store = create<StoreState>((set, get) => ({
     set((state) => ({ tasks: [...state.tasks, ...tasks] }));
     get().saveTasks();
   },
-  saveTasks: () => {
+  saveTasks: async () => {
     const all = get().tasks;
 
     set({ tasks: [...all] });
-    taskAdapter.write(all);
+
+    await taskAdapter.write(all);
+
+    consola.success('saved tasks', all);
   },
 }));
 
+// Apply color schemes
 store.subscribe((state) => {
   const root = document.querySelector<HTMLElement>(':root');
   if (root) {
@@ -88,9 +107,14 @@ store.subscribe((state) => {
   }
 });
 
+const saveSettingsDebouncer = debounce(store.getState().saveSettings, 200);
+
 const init = async () => {
-  const collections = await collectionAdapter.read();
-  store.setState({ collections });
+  const [settings, collections] = await Promise.all([
+    settingsAdapter.read(),
+    collectionAdapter.read(),
+  ]);
+  store.setState({ ...settings, collections });
 
   const [tasks] = await Promise.all([
     taskAdapter.read(),
@@ -100,6 +124,13 @@ const init = async () => {
     ready: true,
 
     tasks,
+  });
+
+  // Listen for settings changes
+  store.subscribe((state, prev) => {
+    if (!settingsChanged(state, prev)) return;
+
+    saveSettingsDebouncer();
   });
 };
 

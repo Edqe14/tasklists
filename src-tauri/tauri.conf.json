@@ -17,7 +17,8 @@
         "unmaximize": true,
         "minimize": true,
         "close": true,
-        "startDragging": true
+        "startDragging": true,
+        "requestUserAttention": true
       },
       "shell": {
         "open": true

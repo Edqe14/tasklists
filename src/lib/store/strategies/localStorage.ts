@@ -1,5 +1,6 @@
 import getCircularReplacer from '@/lib/helpers/getCircularReplacer';
-import { Serializible, Strategy } from '../structs/adapter';
+import Serializible from '@/lib/helpers/types/serializible';
+import { Strategy } from '../structs/adapter';
 
 class LocalStorageStrategy<T> implements Strategy<T, Serializible<T>> {
   protected readonly defaults: T;

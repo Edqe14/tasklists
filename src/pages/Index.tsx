@@ -11,8 +11,6 @@ const Index = () => {
     setColor: state.setColor,
   }), shallow);
 
-  console.log(collections);
-
   return (
     <>
       <section className="mb-1">
@@ -20,7 +18,6 @@ const Index = () => {
         <button className="btn" onClick={() => {collections[0].name = `WOEEE ${Date.now()}`; }}>CHANGE</button>
         {/* eslint-disable-next-line no-param-reassign */}
         <button className="btn" onClick={() => collections.forEach((v, i) => { v.name = `WOEEEE ${i + Math.floor(Math.random() * 10000)}`;})}>CHANGE ALL</button>
-        {/* <button className="btn" onClick={}>FLASHSHEH</button> */}
       </section>
 
       <ColorInput value={color} onChange={setColor} />

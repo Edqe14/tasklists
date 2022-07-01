@@ -45,7 +45,7 @@ export class Task extends Base {
     // Always call this
     super.watch();
 
-    this.on('__save', () => store.getState().saveTasks());
+    this.on('__save', () => store.getState().markChanged('tasks'));
   }
 
   public toJSON() {

@@ -22,7 +22,7 @@ export class Collection extends Base {
     // Always call this
     super.watch();
 
-    this.on('__save', () => store.getState().saveCollections());
+    this.on('__save', () => store.getState().markChanged('collections'));
   }
 
   static resolve(resolvable: string, createOnNotFound: true): Collection;

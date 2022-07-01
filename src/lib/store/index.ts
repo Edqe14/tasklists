@@ -1,8 +1,10 @@
 import { ColorScheme } from '@mantine/core';
 import create from 'zustand';
 import collectionAdapter from './adapters/collections';
+import { settingsDefault } from './adapters/settings';
 import taskAdapter from './adapters/tasks';
 import Collection, { Collections } from './structs/collection';
+import Settings from './structs/settings';
 import Task, { Tasks } from './structs/task';
 
 interface AllProps {
@@ -13,7 +15,6 @@ interface AllProps {
 export type StoreState = {
   ready: boolean;
   theme: ColorScheme;
-  color: string;
 
   collections: AllProps['collections'];
   tasks: AllProps['tasks'];
@@ -33,13 +34,13 @@ export type StoreState = {
   setTasks: (tasks: AllProps['tasks']) => void;
   appendTasks: (...tasks: Task[]) => void;
   saveTasks: () => void;
-};
+} & Settings;
 
 const store = create<StoreState>((set, get) => ({
   // Global
   ready: false,
   theme: 'dark',
-  color: '#3f74e7',
+  ...settingsDefault,
 
   // Variables
   collections: [],

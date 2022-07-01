@@ -2,6 +2,7 @@ import { fs, path } from '@tauri-apps/api';
 import getCircularReplacer from '@/lib/helpers/getCircularReplacer';
 import { Strategy } from '../structs/adapter';
 import Serializible from '@/lib/helpers/types/serializible';
+import logger from '@/lib/logger';
 
 export interface TauriFileSystemStrategyOptions<T> extends Serializible<T> {
   dir?: string[]; // Relative directory before the file name
@@ -25,8 +26,7 @@ class TauriFileSystemStrategy<T> implements Strategy<T, TauriFileSystemStrategyO
 
       return (options?.deserialize ? options.deserialize(data) : this.deserialize(data)) ?? this.defaults;
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.warn(err);
+      logger.warn(err);
 
       return this.defaults;
     }
@@ -39,8 +39,7 @@ class TauriFileSystemStrategy<T> implements Strategy<T, TauriFileSystemStrategyO
         dir: fs.Dir.App
       });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err);
+      logger.error(err);
     }
   }
 

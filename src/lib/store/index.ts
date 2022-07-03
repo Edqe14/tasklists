@@ -9,9 +9,9 @@ import Settings from './structs/settings';
 import Task, { Tasks } from './structs/task';
 import settingsChanged from '../helpers/settingsChanged';
 import logger from '../logger';
-import saveSettingsDebouncer from './debouncers/saveSettings';
-import saveCollectionsDebouncer from './debouncers/saveCollections';
-import saveTasksDebouncer from './debouncers/saveTasks';
+import applySettingsDebouncer from './debouncers/applySettings';
+import applyCollectionsDebouncer from './debouncers/applyCollections';
+import applyTasksDebouncer from './debouncers/applyTasks';
 import sleep from '../helpers/sleep';
 
 interface AllProps {
@@ -116,9 +116,9 @@ const init = async () => {
 
   // Listen for changes
   store.subscribe((state, prev) => {
-    if (settingsChanged(state, prev)) saveSettingsDebouncer();
-    if (!Object.is(state.collections, prev.collections)) saveCollectionsDebouncer();
-    if (!Object.is(state.tasks, prev.tasks)) saveTasksDebouncer();
+    if (settingsChanged(state, prev)) applySettingsDebouncer();
+    if (!Object.is(state.collections, prev.collections)) applyCollectionsDebouncer();
+    if (!Object.is(state.tasks, prev.tasks)) applyTasksDebouncer();
   });
 };
 

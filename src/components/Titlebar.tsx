@@ -28,7 +28,7 @@ const Titlebar = () => {
   return (
     <section
       aria-roledescription="titlebar"
-      className="bg-gray-50 dark:bg-gray-800 dark:bg-opacity-25 px-3 py-[0.2rem] select-none flex"
+      className="bg-gray-50 dark:bg-gray-800 dark:bg-opacity-25 px-3 py-[0.2rem] select-none flex z-[999999]"
     >
       <section onMouseDown={handleMouse} className="flex-grow">
         <h1

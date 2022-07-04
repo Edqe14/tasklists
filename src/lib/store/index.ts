@@ -94,8 +94,6 @@ const init = async () => {
       collectionAdapter.read(),
     ]);
 
-    console.log(configuration);
-
     store.setState({ configuration, collections });
     logger.info('loaded settings and collections');
     logger.trace('loading other modules');

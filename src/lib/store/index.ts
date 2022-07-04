@@ -22,6 +22,7 @@ interface AllProps {
 export type StoreState = {
   ready: boolean;
   theme: ColorScheme;
+  configuration: Settings;
 
   collections: AllProps['collections'];
   tasks: AllProps['tasks'];
@@ -39,13 +40,13 @@ export type StoreState = {
   // Tasks
   setTasks: (tasks: AllProps['tasks']) => void;
   appendTasks: (...tasks: Task[]) => void;
-} & Settings;
+};
 
 const store = create<StoreState>((set) => ({
   // Global
   ready: false,
   theme: 'dark',
-  ...settingsDefault,
+  configuration: settingsDefault,
 
   // Variables
   collections: [],
@@ -54,7 +55,7 @@ const store = create<StoreState>((set) => ({
   // Global methods
   setReady: (state) => set({ ready: state }),
   setTheme: (theme) => set({ theme }),
-  setColor: (color) => set({ color }),
+  setColor: (color) => set((state) => ({ configuration: { ...state.configuration, color } })),
   markChanged: (...keys) => set((state) => mapValues(
     pickBy(state, (v, k) => keys.includes(k as keyof StoreState) && typeof v === 'object'),
     (v) => Array.isArray(v) ? [...v] : ({ ...(v as object) })
@@ -74,11 +75,11 @@ const store = create<StoreState>((set) => ({
 
 // Update color scheme
 store.subscribe((state, prev) => {
-  if (state.color === prev.color) return;
+  if (state.configuration.color === prev.configuration.color) return;
 
   const root = document.querySelector<HTMLElement>(':root');
   if (root) {
-    root.style.setProperty('--color-scheme', state.color);
+    root.style.setProperty('--color-scheme', state.configuration.color);
   }
 });
 
@@ -88,12 +89,14 @@ const init = async () => {
     logger.info('initiating...');
     logger.trace('loading settings and collections');
 
-    const [settings, collections] = await Promise.all([
+    const [configuration, collections] = await Promise.all([
       settingsAdapter.read(),
       collectionAdapter.read(),
     ]);
 
-    store.setState({ ...settings, collections });
+    console.log(configuration);
+
+    store.setState({ configuration, collections });
     logger.info('loaded settings and collections');
     logger.trace('loading other modules');
 

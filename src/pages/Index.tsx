@@ -8,7 +8,7 @@ const Index = () => {
   const { collections, appendCollections, color, setColor } = useStore((state) => ({
     appendCollections: state.appendCollections,
     collections: state.collections,
-    color: state.color,
+    color: state.configuration.color,
     setColor: state.setColor,
   }), shallow);
 

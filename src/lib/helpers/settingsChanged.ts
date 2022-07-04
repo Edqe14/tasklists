@@ -1,7 +1,6 @@
-import { isEqual, pick } from 'lodash-es';
+import shallow from 'zustand/shallow';
 import { StoreState } from '../store';
-import { settingsDefault } from '../store/adapters/settings';
 
-const settingsChanged = (curr: StoreState, prev: StoreState) => !isEqual(pick(curr, Object.keys(settingsDefault)), pick(prev, Object.keys(settingsDefault)));
+const settingsChanged = (curr: StoreState, prev: StoreState) => !shallow(curr.configuration, prev.configuration);
 
 export default settingsChanged;

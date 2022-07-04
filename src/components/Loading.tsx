@@ -7,7 +7,7 @@ interface Props extends LoadingOverlayProps {
 }
 
 const Loading = ({ visible, ...rest }: Props) => {
-  const [theme, color] = store((state) => [state.theme, state.color], shallow);
+  const [theme, color] = store((state) => [state.theme, state.configuration.color], shallow);
 
   return (
     <LoadingOverlay

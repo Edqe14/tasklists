@@ -1,8 +1,10 @@
 import shallow from 'zustand/shallow';
 import { ColorInput } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
 import useStore from '@/lib/store';
 import Collection from '@/lib/store/structs/collection';
 import Loading from '@/components/Loading';
+import buildNotificationProps from '@/lib/helpers/buildNotificationProps';
 
 const Index = () => {
   const { collections, appendCollections, color, setColor } = useStore((state) => ({
@@ -21,7 +23,11 @@ const Index = () => {
         <button className="btn" onClick={() => collections.forEach((v, i) => { v.name = `WOEEEE ${i + Math.floor(Math.random() * 10000)}`;})}>CHANGE ALL</button>
       </section>
 
-      <ColorInput value={color} onChange={setColor} />
+      <ColorInput value={color} onChange={setColor} className="mb-1" />
+
+      <section className="mb-1">
+        <button className="btn" onClick={() => showNotification(buildNotificationProps({ message: 'epic', title: 'ree' }))}>test notif</button>
+      </section>
 
       <section className="w-32 h-32 relative">
         <Loading visible={false} />

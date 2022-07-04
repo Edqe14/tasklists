@@ -11,6 +11,7 @@ import { useLocalStorage } from '@mantine/hooks';
 import shallow from 'zustand/shallow';
 import { ColorScheme, MantineProvider } from '@mantine/core';
 import { pick } from 'lodash-es';
+import { NotificationsProvider } from '@mantine/notifications';
 import Index from './pages/Index';
 import isTauri from './lib/backend';
 import Titlebar from './components/Titlebar';
@@ -55,13 +56,15 @@ const Entry = () => {
           }}
         >
           <Container>
-            <Loading visible={!ready} />
+            <NotificationsProvider position="top-right" className="pt-8">
+              <Loading visible={!ready} />
 
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-              </Routes>
-            </BrowserRouter>
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                </Routes>
+              </BrowserRouter>
+            </NotificationsProvider>
           </Container>
         </MantineProvider>
       </>

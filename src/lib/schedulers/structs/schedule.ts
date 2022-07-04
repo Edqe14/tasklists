@@ -4,9 +4,8 @@ import { Mixin } from 'ts-mixer';
 import TypedEventEmitter from 'typed-emitter';
 import Timestamps from '@/lib/store/structs/timestamps';
 
-export type ScheduleEvents = {
-  // eslint-disable-next-line no-use-before-define
-  run: (value: Schedule) => void;
+export type ScheduleEvents<T> = {
+  run: (reference?: T) => void;
 };
 
 export interface ScheduleOptions<T = unknown> {
@@ -16,7 +15,7 @@ export interface ScheduleOptions<T = unknown> {
   relative?: boolean;
 }
 
-class Schedule<T = unknown> extends Mixin(Timestamps, EventEmitter as new () => TypedEventEmitter<ScheduleEvents>) {
+class Schedule<T = unknown> extends Mixin(Timestamps, EventEmitter as new () => TypedEventEmitter<ScheduleEvents<unknown>>) {
   protected _enabled = true;
 
   get enabled() {
@@ -74,7 +73,7 @@ class Schedule<T = unknown> extends Mixin(Timestamps, EventEmitter as new () => 
     if (this.timeout) clearTimeout(this.timeout);
 
     this.timeout = setTimeout(() => {
-      this.emit('run', this);
+      this.emit('run', this.reference);
 
       if (this.reoccuring) this.schedule();
     }, this.relative ? this.time : this.time - Date.now());

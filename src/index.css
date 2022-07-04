@@ -21,6 +21,6 @@
 
 @layer components {
   .btn {
-    @apply px-2 py-1 mr-1 cursor-pointer bg-scheme;
+    @apply px-2 py-1 mr-1 cursor-pointer bg-scheme text-white;
   }
 }

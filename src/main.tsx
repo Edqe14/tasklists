@@ -53,6 +53,20 @@ const Entry = () => {
         <MantineProvider
           theme={{
             colorScheme: theme,
+            colors: {
+              dark: [
+                '#ffffff',
+                '#d6d6d6',
+                '#adadad',
+                '#848484',
+                '#5b5b5b',
+                '#323232',
+                '#282828',
+                '#1e1e1e',
+                '#141414',
+                '#0a0a0a'
+              ]
+            }
           }}
         >
           <Container>

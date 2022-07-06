@@ -1,6 +1,7 @@
 import { EventEmitter } from 'eventemitter3';
 import { nanoid } from 'nanoid';
 import TypedEventEmitter from 'typed-emitter';
+import { omit } from 'lodash-es';
 import { BaseOptions } from '@/lib/store/structs/base';
 import store from '@/lib/store';
 import getCircularReplacer from '@/lib/helpers/getCircularReplacer';
@@ -108,7 +109,7 @@ class Schedule<T = unknown> extends (EventEmitter as new () => TypedEventEmitter
   }
 
   public toString() {
-    return JSON.stringify(this, getCircularReplacer());
+    return JSON.stringify(omit(this, 'timeout'), getCircularReplacer());
   }
 }
 

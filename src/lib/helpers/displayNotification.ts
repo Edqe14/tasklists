@@ -2,6 +2,7 @@ import { NotificationProps, showNotification } from '@mantine/notifications';
 import { window as tauriWindow } from '@tauri-apps/api';
 import { isPermissionGranted, requestPermission, sendNotification } from '@tauri-apps/api/notification';
 import { UserAttentionType } from '@tauri-apps/api/window';
+import { supportsTauri } from '../backend';
 import store from '../store';
 import buildNotificationProps from './buildNotificationProps';
 import playAudio from './playAudio';
@@ -24,7 +25,7 @@ const displayNotification = async (props: NotificationProps, context?: Notificat
     playAudio(src);
   }
 
-  if (config.notifications.flashTaskbar) await tauriWindow.appWindow.requestUserAttention(UserAttentionType.Informational);
+  if (supportsTauri() && config.notifications.flashTaskbar) await tauriWindow.appWindow.requestUserAttention(UserAttentionType.Informational);
   if (
     config.notifications.showNativeNotification &&
     (

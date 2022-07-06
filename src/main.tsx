@@ -68,6 +68,7 @@ const Entry = () => {
 
         <MantineProvider
           theme={{
+            fontFamily: 'JetBrains Mono, monospace',
             colorScheme: theme,
             colors: {
               dark: [

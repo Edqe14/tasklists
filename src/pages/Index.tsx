@@ -5,11 +5,12 @@ import useStore from '@/lib/store';
 import Collection from '@/lib/store/structs/collection';
 import Loading from '@/components/Loading';
 import buildNotificationProps from '@/lib/helpers/buildNotificationProps';
+import Schedule from '@/lib/schedulers/structs/schedule';
 
 const Index = () => {
-  const { collections, appendCollections, color, setColor } = useStore((state) => ({
-    appendCollections: state.appendCollections,
+  const { collections, schedules, color, setColor } = useStore((state) => ({
     collections: state.collections,
+    schedules: state.schedules,
     color: state.configuration.color,
     setColor: state.setColor,
   }), shallow);
@@ -17,7 +18,7 @@ const Index = () => {
   return (
     <>
       <section className="mb-1">
-        <button className="btn" onClick={() => appendCollections(new Collection({ name: 'WOEEE' }))}>test</button>
+        <button className="btn" onClick={() => new Collection({ name: 'WOEEE' })}>test</button>
         <button className="btn" onClick={() => {collections[0].name = `WOEEE ${Date.now()}`; }}>CHANGE</button>
         {/* eslint-disable-next-line no-param-reassign */}
         <button className="btn" onClick={() => collections.forEach((v, i) => { v.name = `WOEEEE ${i + Math.floor(Math.random() * 10000)}`;})}>CHANGE ALL</button>
@@ -27,14 +28,20 @@ const Index = () => {
 
       <section className="mb-1">
         <button className="btn" onClick={() => showNotification(buildNotificationProps({ message: 'epic', title: 'ree' }))}>test notif</button>
+        <button className="btn" onClick={() => new Schedule({ time: 2_000, reoccuring: true, execute: () => showNotification(buildNotificationProps({ message: 'schedules', title: 'poggers' })) })}>test sched notif</button>
+        <button className="btn" onClick={() => schedules.forEach((v) => v.reoccuring && v.destroy())}>destroy all reoccuring scheds</button>
       </section>
 
       <section className="w-32 h-32 relative">
         <Loading visible={false} />
       </section>
 
-      <section>
+      <section className="mb-2">
         {collections.map((v) => (<p key={v.id}>{v.toString()}</p>))}
+      </section>
+
+      <section className="mb-2">
+        {schedules.map((v) => (<p key={v.id}>{v.toString()}</p>))}
       </section>
     </>
   );

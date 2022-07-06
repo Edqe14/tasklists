@@ -5,11 +5,15 @@ import watch from '@/lib/helpers/watch';
 import Timestamps from './timestamps';
 import getCircularReplacer from '@/lib/helpers/getCircularReplacer';
 
-type BaseEvents = {
+export type BaseEvents = {
   __save: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   changed: (value?: { name: string; value: any }) => any;
 };
+
+export interface BaseOptions {
+  autoAppend?: boolean;
+}
 
 class Base extends Mixin(Timestamps, EventEmitter as new () => TypedEventEmitter<BaseEvents>) {
   protected watch() {

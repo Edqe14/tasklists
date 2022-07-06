@@ -1,11 +1,11 @@
 import { JSONContent } from '@tiptap/react';
 import { nanoid } from 'nanoid';
 import store from '..';
-import Base from './base';
+import Base, { BaseOptions } from './base';
 import Collection from './collection';
 import { TimestampsOptions } from './timestamps';
 
-export interface TaskOptions extends TimestampsOptions {
+export interface TaskOptions extends TimestampsOptions, BaseOptions {
   name: string;
   id?: string;
   description?: JSONContent;
@@ -30,7 +30,7 @@ export class Task extends Base {
 
   public deadline?: Date;
 
-  constructor({ id, name, description, collections, order, starred, deadline, ...timestamps }: TaskOptions) {
+  constructor({ autoAppend = true, id, name, description, collections, order, starred, deadline, ...timestamps }: TaskOptions) {
     super(timestamps);
 
     this.id = id ?? nanoid();
@@ -41,6 +41,8 @@ export class Task extends Base {
     this.order = order ?? {};
     this.starred = starred ?? false;
     this.deadline = deadline;
+
+    if (autoAppend) store.getState().appendTasks(this);
 
     // Always call this
     super.watch();

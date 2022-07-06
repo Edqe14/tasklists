@@ -8,7 +8,7 @@ class Timestamps {
 
   public updatedAt: Date;
 
-  constructor({ createdAt, updatedAt }: TimestampsOptions) {
+  constructor({ createdAt, updatedAt }: TimestampsOptions = {}) {
     this.createdAt = createdAt ? new Date(createdAt) : new Date();
     this.updatedAt = updatedAt ? new Date(updatedAt) : new Date();
 

@@ -1,9 +1,9 @@
 import { nanoid } from 'nanoid';
 import store from '..';
-import Base from './base';
+import Base, { BaseOptions } from './base';
 import { TimestampsOptions } from './timestamps';
 
-export interface CollectionOptions extends TimestampsOptions {
+export interface CollectionOptions extends TimestampsOptions, BaseOptions {
   name: string;
   id?: string;
 }
@@ -13,11 +13,13 @@ export class Collection extends Base {
 
   public name: string;
 
-  constructor({ id, name, ...timestamps }: CollectionOptions) {
+  constructor({ autoAppend = true, id, name, ...timestamps }: CollectionOptions) {
     super(timestamps);
 
     this.id = id ?? nanoid();
     this.name = name;
+
+    if (autoAppend) store.getState().appendCollections(this);
 
     // Always call this
     super.watch();

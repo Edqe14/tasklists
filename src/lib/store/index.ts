@@ -13,6 +13,7 @@ import applySettingsDebouncer from './debouncers/applySettings';
 import applyCollectionsDebouncer from './debouncers/applyCollections';
 import applyTasksDebouncer from './debouncers/applyTasks';
 import sleep from '../helpers/sleep';
+import Schedule from '../schedulers/structs/schedule';
 
 interface AllProps {
   collections: Collections;
@@ -26,12 +27,17 @@ export type StoreState = {
 
   collections: AllProps['collections'];
   tasks: AllProps['tasks'];
+  schedules: Schedule[];
 
   setReady: (state: boolean) => void;
   setTheme: (theme: ColorScheme) => void;
   setColor: (color: string) => void;
-  setAll: (props: AllProps) => void;
   markChanged: (...keys: (keyof StoreState)[]) => void;
+
+  // Setters
+  setAll: (props: AllProps) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  appendSchedules: (...schedules: Schedule<any>[]) => void;
 
   // Collections
   setCollections: (collections: AllProps['collections']) => void;
@@ -51,6 +57,7 @@ const store = create<StoreState>((set) => ({
   // Variables
   collections: [],
   tasks: [],
+  schedules: [],
 
   // Global methods
   setReady: (state) => set({ ready: state }),
@@ -63,6 +70,7 @@ const store = create<StoreState>((set) => ({
 
   // Variable setters
   setAll: (props) => set(props),
+  appendSchedules: (...schedules) => set((state) => ({ schedules: [...state.schedules, ...schedules] })),
 
   // Collections
   setCollections: (collections) => set(({ collections })),

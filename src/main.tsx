@@ -5,13 +5,15 @@ import ReactDOM from 'react-dom/client';
 import {
   BrowserRouter,
   Routes,
-  Route
+  Route,
+  useLocation
 } from 'react-router-dom';
 import { useLocalStorage } from '@mantine/hooks';
 import shallow from 'zustand/shallow';
 import { ColorScheme, MantineProvider } from '@mantine/core';
 import { pick } from 'lodash-es';
 import { NotificationsProvider } from '@mantine/notifications';
+import { AnimatePresence } from 'framer-motion';
 import Index from './pages';
 import isTauri from './lib/backend';
 import Titlebar from './components/Titlebar';
@@ -29,6 +31,19 @@ const updateTheme = () => {
 };
 
 updateTheme();
+
+const RouterRoutes = () => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence>
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Index />} />
+        <Route path="settings" element={<Settings />} />
+      </Routes>
+    </AnimatePresence>
+  );
+};
 
 const Entry = () => {
   const [storedTheme] = useLocalStorage({ key: 'theme', defaultValue: 'dark', serialize: (v) => v });
@@ -75,10 +90,7 @@ const Entry = () => {
               <Loading visible={!ready} />
 
               <BrowserRouter>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/settings" element={<Settings />} />
-                </Routes>
+                <RouterRoutes />
               </BrowserRouter>
             </NotificationsProvider>
           </Container>

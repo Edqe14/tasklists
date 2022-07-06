@@ -1,5 +1,6 @@
 interface Settings {
   color: string;
+  reduceMotion: boolean;
 
   deadline: {
     enabled: boolean; // Whether to check for deadlines
@@ -21,7 +22,6 @@ interface Settings {
     enabled: boolean;
     showNativeNotification: boolean;
     flashTaskbar: boolean;
-    reduceMotion: boolean;
 
     sound: {
       enabled: boolean;

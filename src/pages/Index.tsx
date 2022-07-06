@@ -5,6 +5,7 @@ import useStore from '@/lib/store';
 import Collection from '@/lib/store/structs/collection';
 import Schedule from '@/lib/schedulers/structs/schedule';
 import displayNotification from '@/lib/helpers/displayNotification';
+import PageTransition from '@/components/PageTransition';
 
 const Index = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const Index = () => {
   }), shallow);
 
   return (
-    <>
+    <PageTransition>
       <section className="mb-1">
         <button className="btn" onClick={() => new Collection({ name: 'WOEEE' })}>test</button>
         <button className="btn" onClick={() => {collections[0].name = `WOEEE ${Date.now()}`; }}>CHANGE</button>
@@ -40,7 +41,7 @@ const Index = () => {
       <section className="mb-2">
         {schedules.map((v) => (<p key={v.id}>{v.toString()}</p>))}
       </section>
-    </>
+    </PageTransition>
   );
 };
 

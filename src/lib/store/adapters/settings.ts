@@ -5,6 +5,8 @@ import Settings from '../structs/settings';
 
 export const settingsDefault: Settings = {
   color: '#3f74e7',
+  reduceMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+
   deadline: {
     enabled: true,
     // 24h, 12h, 6h, 2h, 30min
@@ -25,7 +27,6 @@ export const settingsDefault: Settings = {
     enabled: true,
     flashTaskbar: true,
     showNativeNotification: true,
-    reduceMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
 
     sound: {
       deadline: true,

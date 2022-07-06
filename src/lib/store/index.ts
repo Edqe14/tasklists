@@ -91,6 +91,8 @@ store.subscribe((state, prev) => {
   }
 });
 
+export default store;
+
 // Startup
 const init = async () => {
   const start = async () => {
@@ -132,5 +134,3 @@ const init = async () => {
 };
 
 init();
-
-export default store;

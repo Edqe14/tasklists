@@ -19,15 +19,14 @@ interface Settings {
 
   notifications: {
     enabled: boolean;
-
     showNativeNotification: boolean;
     flashTaskbar: boolean;
 
     sound: {
       enabled: boolean;
 
-      deadline: boolean;
-      routine: boolean;
+      deadline: boolean | string;
+      routine: boolean | string;
     };
   };
 }

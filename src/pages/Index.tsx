@@ -1,9 +1,7 @@
 import shallow from 'zustand/shallow';
 import { ColorInput } from '@mantine/core';
-import { showNotification } from '@mantine/notifications';
 import useStore from '@/lib/store';
 import Collection from '@/lib/store/structs/collection';
-import buildNotificationProps from '@/lib/helpers/buildNotificationProps';
 import Schedule from '@/lib/schedulers/structs/schedule';
 import displayNotification from '@/lib/helpers/displayNotification';
 

@@ -1,5 +1,5 @@
 import { ColorScheme } from '@mantine/core';
-import { mapValues, pickBy } from 'lodash-es';
+import { mapValues, merge, pickBy } from 'lodash-es';
 import create from 'zustand';
 import collectionAdapter from './adapters/collections';
 import settingsAdapter, { settingsDefault } from './adapters/settings';
@@ -7,13 +7,13 @@ import taskAdapter from './adapters/tasks';
 import Collection, { Collections } from './structs/collection';
 import Settings from './structs/settings';
 import Task, { Tasks } from './structs/task';
-import settingsChanged from '../helpers/settingsChanged';
 import logger from '../logger';
 import applySettingsDebouncer from './debouncers/applySettings';
 import applyCollectionsDebouncer from './debouncers/applyCollections';
 import applyTasksDebouncer from './debouncers/applyTasks';
 import sleep from '../helpers/sleep';
 import Schedule from '../schedulers/structs/schedule';
+import RecursivePartial from '../helpers/types/recursivePartial';
 
 interface AllProps {
   collections: Collections;
@@ -38,6 +38,7 @@ export type StoreState = {
   setAll: (props: AllProps) => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   appendSchedules: (...schedules: Schedule<any>[]) => void;
+  mergeConfiguration: (config: RecursivePartial<Settings>) => void;
 
   // Collections
   setCollections: (collections: AllProps['collections']) => void;
@@ -71,6 +72,7 @@ const store = create<StoreState>((set) => ({
   // Variable setters
   setAll: (props) => set(props),
   appendSchedules: (...schedules) => set((state) => ({ schedules: [...state.schedules, ...schedules] })),
+  mergeConfiguration: (config) => set((state) => ({ configuration: merge({ ...state.configuration }, config) })),
 
   // Collections
   setCollections: (collections) => set(({ collections })),
@@ -82,10 +84,9 @@ const store = create<StoreState>((set) => ({
 }));
 
 // Update color scheme
-store.subscribe((state, prev) => {
-  if (state.configuration.color === prev.configuration.color) return;
+const root = document.querySelector<HTMLElement>(':root');
 
-  const root = document.querySelector<HTMLElement>(':root');
+store.subscribe((state) => {
   if (root) {
     root.style.setProperty('--color-scheme', state.configuration.color);
   }
@@ -127,7 +128,7 @@ const init = async () => {
 
   // Listen for changes
   store.subscribe((state, prev) => {
-    if (settingsChanged(state, prev)) applySettingsDebouncer();
+    if (!Object.is(state.configuration, prev.configuration)) applySettingsDebouncer();
     if (!Object.is(state.collections, prev.collections)) applyCollectionsDebouncer();
     if (!Object.is(state.tasks, prev.tasks)) applyTasksDebouncer();
   });

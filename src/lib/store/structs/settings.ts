@@ -21,6 +21,7 @@ interface Settings {
     enabled: boolean;
     showNativeNotification: boolean;
     flashTaskbar: boolean;
+    reduceMotion: boolean;
 
     sound: {
       enabled: boolean;

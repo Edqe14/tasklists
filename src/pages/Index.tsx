@@ -1,11 +1,13 @@
 import shallow from 'zustand/shallow';
 import { ColorInput } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
 import useStore from '@/lib/store';
 import Collection from '@/lib/store/structs/collection';
 import Schedule from '@/lib/schedulers/structs/schedule';
 import displayNotification from '@/lib/helpers/displayNotification';
 
 const Index = () => {
+  const navigate = useNavigate();
   const { collections, schedules, color, setColor } = useStore((state) => ({
     collections: state.collections,
     schedules: state.schedules,
@@ -20,6 +22,7 @@ const Index = () => {
         <button className="btn" onClick={() => {collections[0].name = `WOEEE ${Date.now()}`; }}>CHANGE</button>
         {/* eslint-disable-next-line no-param-reassign */}
         <button className="btn" onClick={() => collections.forEach((v, i) => { v.name = `WOEEEE ${i + Math.floor(Math.random() * 10000)}`;})}>CHANGE ALL</button>
+        <button className="btn" onClick={() => navigate('/settings')}>go to settings</button>
       </section>
 
       <ColorInput value={color} onChange={setColor} className="mb-1" />

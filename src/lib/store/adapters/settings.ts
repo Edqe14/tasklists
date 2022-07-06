@@ -25,6 +25,7 @@ export const settingsDefault: Settings = {
     enabled: true,
     flashTaskbar: true,
     showNativeNotification: true,
+    reduceMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
 
     sound: {
       deadline: true,

@@ -12,12 +12,13 @@ import shallow from 'zustand/shallow';
 import { ColorScheme, MantineProvider } from '@mantine/core';
 import { pick } from 'lodash-es';
 import { NotificationsProvider } from '@mantine/notifications';
-import Index from './pages/Index';
+import Index from './pages';
 import isTauri from './lib/backend';
 import Titlebar from './components/Titlebar';
 import Container from './components/Container';
 import useStore from './lib/store';
 import Loading from './components/Loading';
+import Settings from './pages/settings';
 
 const updateTheme = () => {
   if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -76,6 +77,7 @@ const Entry = () => {
               <BrowserRouter>
                 <Routes>
                   <Route path="/" element={<Index />} />
+                  <Route path="/settings" element={<Settings />} />
                 </Routes>
               </BrowserRouter>
             </NotificationsProvider>

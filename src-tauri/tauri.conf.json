@@ -27,6 +27,9 @@
         "scope": ["$APP/*"],
         "readFile": true,
         "writeFile": true
+      },
+      "notification": {
+        "all": true
       }
     },
     "bundle": {

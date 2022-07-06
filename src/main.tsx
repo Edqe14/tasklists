@@ -70,7 +70,7 @@ const Entry = () => {
           }}
         >
           <Container>
-            <NotificationsProvider position="top-right" className="pt-8">
+            <NotificationsProvider position="top-right" className={isTauri ? 'pt-8' : ''}>
               <Loading visible={!ready} />
 
               <BrowserRouter>

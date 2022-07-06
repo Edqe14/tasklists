@@ -3,9 +3,9 @@ import { ColorInput } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import useStore from '@/lib/store';
 import Collection from '@/lib/store/structs/collection';
-import Loading from '@/components/Loading';
 import buildNotificationProps from '@/lib/helpers/buildNotificationProps';
 import Schedule from '@/lib/schedulers/structs/schedule';
+import displayNotification from '@/lib/helpers/displayNotification';
 
 const Index = () => {
   const { collections, schedules, color, setColor } = useStore((state) => ({
@@ -27,13 +27,9 @@ const Index = () => {
       <ColorInput value={color} onChange={setColor} className="mb-1" />
 
       <section className="mb-1">
-        <button className="btn" onClick={() => showNotification(buildNotificationProps({ message: 'epic', title: 'ree' }))}>test notif</button>
-        <button className="btn" onClick={() => new Schedule({ time: 2_000, reoccuring: true, execute: () => showNotification(buildNotificationProps({ message: 'schedules', title: 'poggers' })) })}>test sched notif</button>
+        <button className="btn" onClick={() => displayNotification({ message: 'epic', title: 'ree' })}>test notif</button>
+        <button className="btn" onClick={() => new Schedule({ time: 2_000, reoccuring: true, execute: () => displayNotification({ message: 'schedules', title: 'poggers' }) })}>test sched notif</button>
         <button className="btn" onClick={() => schedules.forEach((v) => v.reoccuring && v.destroy())}>destroy all reoccuring scheds</button>
-      </section>
-
-      <section className="w-32 h-32 relative">
-        <Loading visible={false} />
       </section>
 
       <section className="mb-2">

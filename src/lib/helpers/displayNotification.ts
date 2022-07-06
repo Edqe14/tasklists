@@ -8,21 +8,21 @@ import playAudio from './playAudio';
 
 export type NotificationContext = 'deadline' | 'routine';
 
-export const AUDIO_SRCS = {
-  default: '/src/assets/audio/notification.mp3',
-  deadline: null,
-  routine: null
-};
-
 const displayNotification = async (props: NotificationProps, context?: NotificationContext) => {
   const config = store.getState().configuration;
-
   if (!config.notifications.enabled) return;
 
   const notification = showNotification(buildNotificationProps(props));
 
-  // TODO: customizable audio and per context audio
-  if (config.notifications.sound.enabled) playAudio(AUDIO_SRCS[context ?? 'default'] ?? AUDIO_SRCS.default);
+  if (!context ? true : config.notifications.sound[context]) {
+    let src = '/src/assets/audio/notification.mp3';
+
+    if (context && typeof config.notifications.sound[context] === 'string') {
+      src = config.notifications.sound[context] as string;
+    }
+
+    playAudio(src);
+  }
 
   if (config.notifications.flashTaskbar) await tauriWindow.appWindow.requestUserAttention(UserAttentionType.Informational);
   if (

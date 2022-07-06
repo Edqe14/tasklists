@@ -1,6 +1,7 @@
 import { ColorScheme } from '@mantine/core';
-import { mapValues, merge, pickBy } from 'lodash-es';
+import { isEqual, mapValues, pickBy } from 'lodash-es';
 import create from 'zustand';
+import merge from 'mergerino';
 import collectionAdapter from './adapters/collections';
 import settingsAdapter, { settingsDefault } from './adapters/settings';
 import taskAdapter from './adapters/tasks';
@@ -128,7 +129,7 @@ const init = async () => {
 
   // Listen for changes
   store.subscribe((state, prev) => {
-    if (!Object.is(state.configuration, prev.configuration)) applySettingsDebouncer();
+    if (!isEqual(state.configuration, prev.configuration)) applySettingsDebouncer();
     if (!Object.is(state.collections, prev.collections)) applyCollectionsDebouncer();
     if (!Object.is(state.tasks, prev.tasks)) applyTasksDebouncer();
   });

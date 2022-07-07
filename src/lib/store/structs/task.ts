@@ -13,6 +13,7 @@ export interface TaskOptions extends TimestampsOptions, BaseOptions {
   order?: Record<string, number>; // Order mapped by collection id, defaults to 0
   starred?: boolean;
   deadline?: Date;
+  finished?: boolean;
 }
 
 export class Task extends Base {
@@ -30,7 +31,9 @@ export class Task extends Base {
 
   public deadline?: Date;
 
-  constructor({ autoAppend = true, id, name, description, collections, order, starred, deadline, ...timestamps }: TaskOptions) {
+  public finished = false;
+
+  constructor({ autoAppend = true, id, name, description, collections, order, starred, deadline, finished, ...timestamps }: TaskOptions) {
     super(timestamps);
 
     this.id = id ?? nanoid();
@@ -41,6 +44,7 @@ export class Task extends Base {
     this.order = order ?? {};
     this.starred = starred ?? false;
     this.deadline = deadline;
+    this.finished = finished ?? false;
 
     if (autoAppend) store.getState().appendTasks(this);
 

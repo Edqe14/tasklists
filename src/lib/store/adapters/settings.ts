@@ -2,6 +2,7 @@ import { TauriFileSystemStrategyOptions } from '../strategies/tauriFileSystem';
 import StoreAdapter from '../structs/adapter';
 import getStrategy from '@/lib/helpers/getStrategy';
 import Settings from '../structs/settings';
+import { supportsTauri } from '@/lib/backend';
 
 export const settingsDefault: Settings = {
   color: '#3f74e7',
@@ -25,7 +26,7 @@ export const settingsDefault: Settings = {
   },
   notifications: {
     enabled: true,
-    flashTaskbar: true,
+    flashTaskbar: supportsTauri(),
     showNativeNotification: true,
 
     sound: {

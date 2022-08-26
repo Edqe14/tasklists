@@ -20,6 +20,8 @@ class TauriFileSystemStrategy<T> implements Strategy<T, TauriFileSystemStrategyO
 
   async read(name: string, options?: TauriFileSystemStrategyOptions<T>): Promise<T> {
     try {
+      await fs.createDir('data', { recursive: true, dir: fs.Dir.App }).catch(() => null);
+
       const data = await fs.readTextFile([...(options?.dir ?? ['data']), `${name}.json`].join(path.sep), {
         dir: fs.Dir.App
       });
@@ -35,8 +37,10 @@ class TauriFileSystemStrategy<T> implements Strategy<T, TauriFileSystemStrategyO
   async write(name: string, data: T, options?: TauriFileSystemStrategyOptions<T>): Promise<void> {
     try {
       const strData = options?.serialize ? options.serialize(data) : this.serialize(data);
+
+      await fs.createDir('data', { recursive: true, dir: fs.Dir.App }).catch(() => null);
       await fs.writeTextFile([...(options?.dir ?? ['data']), `${name}.json`].join(path.sep), strData, {
-        dir: fs.Dir.App
+        dir: fs.Dir.App,
       });
     } catch (err) {
       logger.error(err);
